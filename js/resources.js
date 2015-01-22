@@ -4,9 +4,13 @@ game.resources = [
 	 * @example
 	 * {name: "example", type:"image", src: "data/img/example.png"},
 	 */
-        
         {name: "background-tiles", type:"image", src: "data/img/background-tiles.png"},
         {name: "meta-tiles", type:"image", src: "data/img/meta-tiles.png"},
+        
+        
+        
+        //added the background and the tiles that we use in tiled so the game knows what so put in likr the pictures
+        //meta tiles are tiles that are like collision tiles so that u can like make a wall
 	/* Atlases 
 	 * @example
 	 * {name: "example_tps", type: "tps", src: "data/img/example_tps.json"},
@@ -18,6 +22,7 @@ game.resources = [
 	 * {name: "example01", type: "tmx", src: "data/map/example01.json"},
  	 */
         {name: "level01", type: "tmx", src: "data/map/test.tmx"},
+        //loading the level 
 
 
 
