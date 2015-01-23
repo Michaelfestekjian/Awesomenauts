@@ -7,8 +7,10 @@ game.PlayScreen = me.ScreenObject.extend({
 		game.data.score = 0;
                 me.levelDirector.loadLevel("level01");
                 
-                var.player = me.pool.pull("player", 0, 420, {});
-                me.game.world.addchild(player, 5);
+                var player = me.pool.pull("player", 0, 420,{});
+                me.game.world.addChild(player, 5);
+                
+                me.input.bindKey(me.input.KEY.RIGHT, "right");
                 //this it to acutelly show the player on the screen in the game 
                 //so you can run and see somthing on the screen 
 
