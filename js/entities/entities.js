@@ -14,14 +14,18 @@ game.PlayerEntity = me.Entity.extend({
         this.body.setVelocity(5, 0);
     },
     
-    update: function(){
+    update: function(delta){
+        //if u have delta here u need to also have it at the bottom 
         if(me.input.isKeyPressed("right")){
            
             this.body.vel.x += this.body.accel.x *me.timer.tick;
+            //this is a tick so on key when u his the ky is will go right 
         }else{
             this.body.vel.x = 0;
         }
         this.body.update(delta);
+        return true;
+        //need this code to make player move 
         
     }
 });
