@@ -5,8 +5,10 @@ game.PlayScreen = me.ScreenObject.extend({
 	onResetEvent: function() {
 		// reset the score
 		game.data.score = 0;
-                
                 me.levelDirector.loadLevel("level01");
+                
+                var.player = me.pool.pull("player", 0, 420, {});
+                me.game.world.addchild(player, 5);
                 //so you can run and see somthing on the screen 
 
 		// add our HUD to the game world
