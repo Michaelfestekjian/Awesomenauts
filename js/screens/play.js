@@ -9,6 +9,7 @@ game.PlayScreen = me.ScreenObject.extend({
                 
                 var.player = me.pool.pull("player", 0, 420, {});
                 me.game.world.addchild(player, 5);
+                //this it to acutelly show the player on the screen in the game 
                 //so you can run and see somthing on the screen 
 
 		// add our HUD to the game world

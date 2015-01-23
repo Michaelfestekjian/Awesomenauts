@@ -18,3 +18,4 @@ game.PlayerEntity = me.Entity.extend({
     }
 });
 
+//all of this is to add the player
