@@ -11,7 +11,8 @@ game.PlayerEntity = me.Entity.extend({
                     return(new me.Rect(0, 0, 64, 64)).toPolygon();
                 }
             }]);
-        this.body.setVelocity(5, 0);
+        this.body.setVelocity(5, 20);
+        //all we did this video is make the player on the floor and changed the tiled code and stuff 
     },
     
     update: function(delta){
