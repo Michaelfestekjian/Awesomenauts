@@ -7,6 +7,7 @@ game.resources = [
         {name: "background-tiles", type:"image", src: "data/img/background-tiles.png"},
         {name: "meta-tiles", type:"image", src: "data/img/meta-tiles.png"},
         {name: "player", type:"image", src: "data/img/orcSpear.png"},
+        {name: "tower", type:"image", src: "data/img/tower_round.svg.png"},
         
         
         //added the background and the tiles that we use in tiled so the game knows what so put in likr the pictures
