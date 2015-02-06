@@ -11,6 +11,7 @@ game.PlayScreen = me.ScreenObject.extend({
                 me.game.world.addChild(player, 5);
                 
                 me.input.bindKey(me.input.KEY.RIGHT, "right");
+                me.input.bindKey(me.input.KEY.A, "attack");
                 me.input.bindKey(me.input.KEY.LEFT, "left");
                 me.input.bindKey(me.input.KEY.SPACE, "jump", true);
                 //this it to acutelly show the player on the screen in the game 

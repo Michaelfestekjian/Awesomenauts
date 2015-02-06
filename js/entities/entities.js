@@ -17,6 +17,7 @@ game.PlayerEntity = me.Entity.extend({
 
         this.renderable.addAnimation("idle", [78]);
         this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
+         this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 70, 71, 72], 80);
 
         this.renderable.setCurrentAnimation("idle");
     },
@@ -35,6 +36,16 @@ game.PlayerEntity = me.Entity.extend({
         else {
             this.body.vel.x = 0;
         }
+        if (me.input.isKeyPressed("attack")){
+        if(!this.renderable.isCurrentAnimation("attack")){
+            //setd the current animation to attack and once that is over then goas back toy the idle animation
+            this.renderable.setCurrentAnimation("attack", "idle");
+            //the next time we dtatt rhis we begin from the first anumation not when we switched to another animation 
+            this.renderable.setAnimationFrame();
+        }    
+        
+        }
+        
         if (me.input.isKeyPressed('jump')) {
             // make sure we are not already jumping or falling
             if (!this.body.jumping && !this.body.falling) {
