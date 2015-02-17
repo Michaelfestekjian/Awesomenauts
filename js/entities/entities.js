@@ -8,10 +8,17 @@ game.PlayerEntity = me.Entity.extend({
                 spriteheight: "64",
                 getShape: function() {
                     //get shape is for mellon.js its the version our code needs to have to run with it :)
+                    //shapes for melon.js 
                     return(new me.Rect(0, 0, 64, 64)).toPolygon();
                 }
             }]);
         this.body.setVelocity(5, 20);
+        this.faceing = "right";
+        this.now = new Date().getTime();
+        this.lastHit = this.now();
+        this.latsAttack = new Date().getTime(); 
+                
+        //keeps track of the direction of wich way your carekter is going 
          me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
         //all we did this video is make the player on the floor and changed the tiled code and stuff 
 
@@ -26,10 +33,15 @@ game.PlayerEntity = me.Entity.extend({
         if (me.input.isKeyPressed("right")) {
 
             this.body.vel.x += this.body.accel.x * me.timer.tick;
+            this.faeing = "right";
+            this.facing = "right";
             this.flipX(true);
         }
         else if (me.input.isKeyPressed("left")) {
+            this.facing = "left";
+            
             this.flipX(false);
+            this.facing = "left";
             this.body.vel.x -= this.body.accel.x * me.timer.tick;
         }
         //this is a tick so on key when u his the ky is will go right 
@@ -49,19 +61,35 @@ game.PlayerEntity = me.Entity.extend({
                 this.body.jumping = true;
             }
 
+
+
+   if (me.input.isKeyPressed("attack")){
+        if(!this.renderable.isCurrentAnimation("attack")){
+            console.log(!this.renderable.isCurrentAnimation("attack"));
+            //setd the current animation to attack and once that is over then
+            // goas back toy the idle animation
+            this.renderable.setCurrentAnimation("attack", "idle");
+            //the next time we dtatt rhis we begin 
+            //from the first anumation not when we switched to another animation 
+            this.renderable.setAnimationFrame();
+        }   
+        
+            }
+        
         }
-        if (this.body.vel.x !== 0) {
+        else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
             if (!this.renderable.isCurrentAnimation("walk")) {
                 this.renderable.setCurrentAnimation("walk");
             }
 
 
-        } else {
+        } else if (!this.renderable.isCurrentAnimation("attack")){
             this.renderable.setCurrentAnimation("idle");
         }
         
          if (me.input.isKeyPressed("attack")){
         if(!this.renderable.isCurrentAnimation("attack")){
+            console.log(!this.renderable.isCurrentAnimation("attack"));
             //setd the current animation to attack and once that is over then
             // goas back toy the idle animation
             this.renderable.setCurrentAnimation("attack", "idle");
@@ -72,7 +100,7 @@ game.PlayerEntity = me.Entity.extend({
         
         }
         
-        
+        me.collision.check(this, true, this.collideHandler.bind(this), true);
         this.body.update(delta);
 
         this._super(me.Entity, "update", [delta]);
@@ -80,11 +108,32 @@ game.PlayerEntity = me.Entity.extend({
         return true;
         //need this code to make player move 
 
-    }
-});
+    },
+    
+    collideHandler: function(responce){
+        if(responce.b.type==='EnemyBaseEntity'){
+            var ydif = this.body.pos.y - responce.b.pos.y;
+            var xdif = this.body.pos.x - responce.b.pos.x;
+            
+            console.log("xdif " + xdif + " ydif " + ydif);
+
+            if(xdif>-35 && this.true.facing==='right'){
+               this.body.vel.x = 0;
+               this.body.pos.x = this.pos.x -1;
+           }else if(xdif<70 && this.facing==='left'){
+               this.body.vel.x = 0;
+               this.body.pos.x = this.body.pos.x +1;
+               //makes so you are faceing your way when walking 
+            }
+
+            if(this.renderable.isCurrentAnimation ("attack") && this.now-this.lastHit >= 400 ){;
+                this.lastHit = this.now;
+                responce.b.loseHealth();
+        }
+    
 
 //all of this is to add the player
-
+        
 game.PlayerBaseEntity = me.Entity.extend({
     init: function(x, y, settings) {
         this._super(me.Entity, 'init', [x, y, {
@@ -158,6 +207,10 @@ game.EnemyBaseEntity = me.Entity.extend({
     },
     onCollision: function() {
 
+    },
+    
+    loseHealth:function(){
+        this.health--; 
     }
 
 });
