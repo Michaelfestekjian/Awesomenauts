@@ -14,18 +14,16 @@ game.PlayerEntity = me.Entity.extend({
             }]);
         this.body.setVelocity(5, 20);
         this.faceing = "right";
-        this.now = new Date().getTime();
-        this.lastHit = this.now();
-        this.latsAttack = new Date().getTime(); 
-                
+        this.now = new Date().getTime;
+        this.lastHit = this.now;
+        this.latsAttack = new Date().getTime();
         //keeps track of the direction of wich way your carekter is going 
-         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
         //all we did this video is make the player on the floor and changed the tiled code and stuff 
 
         this.renderable.addAnimation("idle", [78]);
         this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
-         this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 70, 71, 72], 80);
-
+        this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 70, 71, 72], 80);
         this.renderable.setCurrentAnimation("idle");
     },
     update: function(delta) {
@@ -39,7 +37,6 @@ game.PlayerEntity = me.Entity.extend({
         }
         else if (me.input.isKeyPressed("left")) {
             this.facing = "left";
-            
             this.flipX(false);
             this.facing = "left";
             this.body.vel.x -= this.body.accel.x * me.timer.tick;
@@ -48,9 +45,9 @@ game.PlayerEntity = me.Entity.extend({
         else {
             this.body.vel.x = 0;
         }
-       
-    
-        
+
+
+
         if (me.input.isKeyPressed('jump')) {
             // make sure we are not already jumping or falling
             if (!this.body.jumping && !this.body.falling) {
@@ -63,19 +60,19 @@ game.PlayerEntity = me.Entity.extend({
 
 
 
-   if (me.input.isKeyPressed("attack")){
-        if(!this.renderable.isCurrentAnimation("attack")){
-            console.log(!this.renderable.isCurrentAnimation("attack"));
-            //setd the current animation to attack and once that is over then
-            // goas back toy the idle animation
-            this.renderable.setCurrentAnimation("attack", "idle");
-            //the next time we dtatt rhis we begin 
-            //from the first anumation not when we switched to another animation 
-            this.renderable.setAnimationFrame();
-        }   
-        
+            if (me.input.isKeyPressed("attack")) {
+                if (!this.renderable.isCurrentAnimation("attack")) {
+                    console.log(!this.renderable.isCurrentAnimation("attack"));
+                    //setd the current animation to attack and once that is over then
+                    // goas back toy the idle animation
+                    this.renderable.setCurrentAnimation("attack", "idle");
+                    //the next time we dtatt rhis we begin 
+                    //from the first anumation not when we switched to another animation 
+                    this.renderable.setAnimationFrame();
+                }
+
             }
-        
+
         }
         else if (this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) {
             if (!this.renderable.isCurrentAnimation("walk")) {
@@ -83,57 +80,54 @@ game.PlayerEntity = me.Entity.extend({
             }
 
 
-        } else if (!this.renderable.isCurrentAnimation("attack")){
+        } else if (!this.renderable.isCurrentAnimation("attack")) {
             this.renderable.setCurrentAnimation("idle");
         }
-        
-         if (me.input.isKeyPressed("attack")){
-        if(!this.renderable.isCurrentAnimation("attack")){
-            console.log(!this.renderable.isCurrentAnimation("attack"));
-            //setd the current animation to attack and once that is over then
-            // goas back toy the idle animation
-            this.renderable.setCurrentAnimation("attack", "idle");
-            //the next time we dtatt rhis we begin 
-            //from the first anumation not when we switched to another animation 
-            this.renderable.setAnimationFrame();
-        }   
-        
+
+        if (me.input.isKeyPressed("attack")) {
+            if (!this.renderable.isCurrentAnimation("attack")) {
+                console.log(!this.renderable.isCurrentAnimation("attack"));
+                //setd the current animation to attack and once that is over then
+                // goas back toy the idle animation
+                this.renderable.setCurrentAnimation("attack", "idle");
+                //the next time we dtatt rhis we begin 
+                //from the first anumation not when we switched to another animation 
+                this.renderable.setAnimationFrame();
+            }
+
         }
-        
+
         me.collision.check(this, true, this.collideHandler.bind(this), true);
         this.body.update(delta);
-
         this._super(me.Entity, "update", [delta]);
-
         return true;
         //need this code to make player move 
 
     },
-    
-    collideHandler: function(responce){
-        if(responce.b.type==='EnemyBaseEntity'){
+    collideHandler: function(responce) {
+        if (responce.b.type === 'EnemyBaseEntity') {
             var ydif = this.body.pos.y - responce.b.pos.y;
             var xdif = this.body.pos.x - responce.b.pos.x;
-            
             console.log("xdif " + xdif + " ydif " + ydif);
-
-            if(xdif>-35 && this.true.facing==='right'){
-               this.body.vel.x = 0;
-               this.body.pos.x = this.pos.x -1;
-           }else if(xdif<70 && this.facing==='left'){
-               this.body.vel.x = 0;
-               this.body.pos.x = this.body.pos.x +1;
-               //makes so you are faceing your way when walking 
+            if (xdif > -35 && this.true.facing === 'right') {
+                this.body.vel.x = 0;
+                this.body.pos.x = this.pos.x - 1;
+            } else if (xdif < 70 && this.facing === 'left') {
+                this.body.vel.x = 0;
+                this.body.pos.x = this.body.pos.x + 1;
+                //makes so you are faceing your way when walking 
             }
 
-            if(this.renderable.isCurrentAnimation ("attack") && this.now-this.lastHit >= 400 ){;
+            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= 400) {
+                ;
                 this.lastHit = this.now;
                 responce.b.loseHealth();
+            }
         }
-    
-
+    }
+});
 //all of this is to add the player
-        
+
 game.PlayerBaseEntity = me.Entity.extend({
     init: function(x, y, settings) {
         this._super(me.Entity, 'init', [x, y, {
@@ -150,7 +144,6 @@ game.PlayerBaseEntity = me.Entity.extend({
         this.health = 10;
         this.allwaysUpdate = true;
         this.body.onCollision = this.onCollision.bind(this);
-
         this.type = "PlayerBaseEntity";
         this.renderable.addAnimation("idle", [0]);
         this.renderable.addAnimation("broken, [1]");
@@ -162,10 +155,16 @@ game.PlayerBaseEntity = me.Entity.extend({
             this.renderable.setCurrentAnimation("broken");
         }
         this.body.update(delta);
-
         this._super(me.Entity, "update", [delta]);
         return true;
     },
+    loseHealth: function (damage){
+        this.this.heath = this.health - damage;
+    },
+  
+        
+    
+
     onCollision: function() {
 
     }
@@ -189,7 +188,6 @@ game.EnemyBaseEntity = me.Entity.extend({
         this.health = 10;
         this.allwaysUpdate = true;
         this.body.onCollision = this.onCollision.bind(this);
-
         this.type = "EnemyBaseEntity";
         this.renderable.addAnimation("idle", [0]);
         this.renderable.addAnimation("broken, [1]");
@@ -201,16 +199,92 @@ game.EnemyBaseEntity = me.Entity.extend({
             this.renderable.setCurrentAnimation("broken");
         }
         this.body.update(delta);
-
         this._super(me.Entity, "update", [delta]);
         return true;
     },
     onCollision: function() {
 
     },
-    
-    loseHealth:function(){
-        this.health--; 
+    loseHealth: function() {
+        this.health--;
     }
-
 });
+
+game.EnemyCreep = me.Entity.extend({
+    init: function(x, y, settings) {
+        this._super(me.Entity, 'init', [x, y, {
+            image: "creep1",
+            width: 32,
+            height: 64,
+            spritewidth: "32",
+            spriteheight: "64",
+            getShape: function() {
+                return (new me.Rect(0, 0, 32, 64)).stoPolygon();
+            }
+        }]);
+        
+        this.health = 10;
+        this.allwaysUpdate = true;
+        
+        this.attacking = false;
+        
+        this.lestAttacking = new Date().getTime();
+        
+        this.lastHit = new Date().getTime();
+        this.now = new Date().getTime();
+        this.body.setVelocity(3, 20);
+        this.type = "EnemyCreep";
+        
+        
+        this.renderable.addAnimation("walk", [3, 4, 5], 80);
+        this.renderable.setCurrentAnimation("walk");
+    },
+    
+    update: function(delta) {
+        this.now = new Date().getTime();
+        this.body.vel.x -= this.accel.x * me.timer.tick;
+        me.collision.check(this, true, this.collidHandler.bind(this), true);
+        this.body.update(delta);
+        this._super(me.Entity, "update", [delta]);
+        return true;
+    },
+        
+    collideHandler: function(responce){
+        if (responce.b.type === 'PlayerBase'){
+            this.attacking = true;
+            this.lastAttacking = this.now;
+            this.body.vel.x = 0;
+            this.pos.x = this.pos.x + 1;
+            
+            if ((this.now - this.lastHit >= 1000)){
+                this.lastHit = this.now;
+                responce.b.loseHealth(1);
+            }
+        }
+    }
+});
+
+game.GameManager = Object.extend({
+    init: function(x, y, settings){
+        this.now = new Date().getTime;
+        this.lastCreep = new Date().getTime;
+        this.now = new Date().getTime();
+        this.alwaysUpdate = true;
+    },
+    
+    update: function(){
+        this.now = new Date().getTime;
+        
+        if (Math.round(this.now / 1000) % 10 === 0 && (this.now - this.lastCreep >= 1000)) {
+            this.lastCreep = this.now;
+            var creeps = me.pool.pull("EnemyCreep", 1000, 0, {});
+            me.game.worldaddChild("creepe", 5);
+        }
+        return true;
+    }
+});
+
+
+
+
+//22
