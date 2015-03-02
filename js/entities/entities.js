@@ -12,6 +12,7 @@ game.PlayerEntity = me.Entity.extend({
                     return(new me.Rect(0, 0, 64, 64)).toPolygon();
                 }
             }]);
+        this.type = "PlayerEntity";
         this.body.setVelocity(5, 20);
         this.faceing = "right";
         this.now = new Date().getTime;
@@ -104,6 +105,9 @@ game.PlayerEntity = me.Entity.extend({
         //need this code to make player move 
 
     },
+    losehealth: function(damage){
+      this.health = this.health - damage;  
+    },
     collideHandler: function(responce) {
         if (responce.b.type === 'EnemyBaseEntity') {
             var ydif = this.body.pos.y - responce.b.pos.y;
@@ -158,13 +162,9 @@ game.PlayerBaseEntity = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
-    loseHealth: function (damage){
+    loseHealth: function(damage) {
         this.this.heath = this.health - damage;
     },
-  
-        
-    
-
     onCollision: function() {
 
     }
@@ -213,33 +213,32 @@ game.EnemyBaseEntity = me.Entity.extend({
 game.EnemyCreep = me.Entity.extend({
     init: function(x, y, settings) {
         this._super(me.Entity, 'init', [x, y, {
-            image: "creep1",
-            width: 32,
-            height: 64,
-            spritewidth: "32",
-            spriteheight: "64",
-            getShape: function() {
-                return (new me.Rect(0, 0, 32, 64)).stoPolygon();
-            }
-        }]);
-        
+                image: "creep1",
+                width: 32,
+                height: 64,
+                spritewidth: "32",
+                spriteheight: "64",
+                getShape: function() {
+                    return (new me.Rect(0, 0, 32, 64)).stoPolygon();
+                }
+            }]);
+
         this.health = 10;
         this.allwaysUpdate = true;
-        
+
         this.attacking = false;
-        
+
         this.lestAttacking = new Date().getTime();
-        
+
         this.lastHit = new Date().getTime();
         this.now = new Date().getTime();
         this.body.setVelocity(3, 20);
         this.type = "EnemyCreep";
-        
-        
+
+
         this.renderable.addAnimation("walk", [3, 4, 5], 80);
         this.renderable.setCurrentAnimation("walk");
     },
-    
     update: function(delta) {
         this.now = new Date().getTime();
         this.body.vel.x -= this.accel.x * me.timer.tick;
@@ -248,15 +247,25 @@ game.EnemyCreep = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
-        
-    collideHandler: function(responce){
-        if (responce.b.type === 'PlayerBase'){
+    collideHandler: function(responce) {
+        if (responce.b.type === 'PlayerBase') {
             this.attacking = true;
             this.lastAttacking = this.now;
             this.body.vel.x = 0;
             this.pos.x = this.pos.x + 1;
+
+            if ((this.now - this.lastHit >= 1000)) {
+                this.lastHit = this.now;
+                responce.b.loseHealth(1);
+            }
+        }else if (responce.b.type=== 'PlayerEntity'){
             
-            if ((this.now - this.lastHit >= 1000)){
+               this.attacking = true;
+            this.lastAttacking = this.now;
+            this.body.vel.x = 0;
+            this.pos.x = this.pos.x + 1;
+
+            if ((this.now - this.lastHit >= 1000)) {
                 this.lastHit = this.now;
                 responce.b.loseHealth(1);
             }
@@ -265,16 +274,15 @@ game.EnemyCreep = me.Entity.extend({
 });
 
 game.GameManager = Object.extend({
-    init: function(x, y, settings){
+    init: function(x, y, settings) {
         this.now = new Date().getTime;
         this.lastCreep = new Date().getTime;
         this.now = new Date().getTime();
         this.alwaysUpdate = true;
     },
-    
-    update: function(){
+    update: function() {
         this.now = new Date().getTime;
-        
+
         if (Math.round(this.now / 1000) % 10 === 0 && (this.now - this.lastCreep >= 1000)) {
             this.lastCreep = this.now;
             var creeps = me.pool.pull("EnemyCreep", 1000, 0, {});
@@ -283,8 +291,4 @@ game.GameManager = Object.extend({
         return true;
     }
 });
-
-
-
-
-//22
+//22  45 sec on the youtube vid
