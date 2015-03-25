@@ -4,7 +4,19 @@ var game = {
     // an object where to store game information
     data: {
         // score
-        score: 0
+        score: 0,
+        enemyBaseHealth: 10,
+        playerBaseHealth: 10,
+        enemycreephealth: 10,
+        playerhealth: 10,
+        enemyCreepAtack: 1,
+        playerAttack: 1,
+        playerAttackTimer: 1000,
+        creepAtackTimer: 1000,
+        playerMoveSpeed: 5,
+        creepMoveSpeed: 5,
+        gameManager: "",
+        player: "",
     },
     // Run on page load.
     "onload": function() {

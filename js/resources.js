@@ -8,6 +8,7 @@ game.resources = [
     {name: "player", type: "image", src: "data/img/orcSpear.png"},
     {name: "tower", type: "image", src: "data/img/tower_round.svg.png"},
     {name: "creep1", type: "image", src: "data/img/brainmonster.png"},
+    //{name: "clouds1", type: "image", src: "data/img/clouds1.png"},
     //added the background and the tiles that we use in tiled so the game knows what so put in likr the pictures
     //meta tiles are tiles that are like collision tiles so that u can like make a wall
     /* Atlases 
